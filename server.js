@@ -12,10 +12,6 @@ var PORT = 3000;
 // Initialize Express
 var app = express();
 
-// Configure middleware
-
-// Use morgan logger for logging requests
-app.use(logger("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -34,21 +30,21 @@ axios.get("https://www.bbc.com/news/science_and_environment").then(function(resp
   // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
   var $ = cheerio.load(response.data);
 
-  // An empty array to save the data that we'll scrape
-  var results = [];
-
+  
   // Select each element in the HTML body from which you want information.
   // NOTE: Cheerio selectors function similarly to jQuery's selectors,
   // but be sure to visit the package's npm page to see how it works
   $("h3.title-link__title").each(function(i, element) {
+    // An empty array to save the data that we'll scrape
+    var result = {};
 
-    var title = $(element).children().text();
-    var link = $(element).parent("a").attr("href");
-
+    result.title = $(this).children().text();
+    result.link = $(this).parent("a").attr("href");
+    // console.log(result);
     db.Article.create(result)
     .then(function(dbArticle) {
       // View the added result in the console
-      console.log(dbArticle);
+      console.log("dbArticle: " + dbArticle);
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
