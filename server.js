@@ -7,10 +7,19 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+
 
 // Initialize Express
 var app = express();
+
+// Set the port of our application
+// process.env.PORT lets the port be set by Heroku
+var PORT = process.env.PORT || 3000;
+
+// Set Handlebars as the default templating engine.
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
@@ -22,6 +31,29 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/mongoscraper", { useNewUrlParser: true });
 
 // Routes
+
+//***************************** */
+//GET requests to render Handlebars pages
+app.get("/", function(req, res) {
+  db.Article.find({"saved": false}, function(error, data) {
+    var hbsObject = {
+      article: data
+    };
+    console.log(hbsObject);
+    res.render("index", hbsObject);
+  });
+});
+
+app.get("/saved", function(req, res) {
+  db.Article.find({"saved": true}).populate("notes").exec(function(error, articles) {
+    var hbsObject = {
+      article: articles
+    };
+    res.render("saved", hbsObject);
+  });
+});
+//********************************** */
+
 app.get("/scrape", function(req, res) {
 // Make a request via axios to grab the HTML body from the site of your choice
 axios.get("https://www.bbc.com/news/science_and_environment").then(function(response) {
