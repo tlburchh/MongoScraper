@@ -8,7 +8,7 @@ var cheerio = require("cheerio");
 var db = require("./models");
 var Article = require("./models/Article");
 var Note = require("./models/Note");
-
+var Saved = require("./models/Saved")
 
 
 
@@ -49,11 +49,11 @@ app.get("/", function(req, res) {
 });
 
 app.get("/saved", function(req, res) {
-  Article.find({})
+  Saved.find({})
   .populate("notes")
-  .exec(function(error, articles) {
+  .exec(function(error, saved) {
     var hbsObject = {
-      article: articles
+      saved: saved
     };
     res.render("saved", hbsObject);
   });
@@ -146,7 +146,7 @@ app.post("/articles/:id", function(req, res) {
 
 
   app.post("/saved/:id", function(req, res) {
-      db.Note.create(req.body)
+      db.Saved.create(req.body)
       .then(function(newSave){
         return db.Article.findOneAndUpdate(
           {

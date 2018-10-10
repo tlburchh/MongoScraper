@@ -1,0 +1,22 @@
+        <div class="container">
+            <div class="col-md-12">
+              {{#if article}}
+                {{#each article}}
+                {{!-- console.log(this.title); --}}
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>{{this.title}}</h4>
+                    </div>
+                    <div class="card-body">
+                      <a href={{this.link}}>{{this.link}}</a>
+                      <button type="button" class="btn btn-success save" id="save" data-id={{this._id}}>Save Article</button>
+                    </div>
+                  </div>
+                  {{/each}}
+                {{else}}
+                <div class="card-body">
+                  <h4>There are currently no articles to view.</h4>
+                </div>
+            </div>
+            {{/if}}
+        </div>
