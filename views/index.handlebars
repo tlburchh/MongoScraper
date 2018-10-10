@@ -1,32 +1,34 @@
-    <body>
+ 
       <div id="wrapper">
-        {{!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <ul class="nav">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Active</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-        </nav> --}}
-        <!-- <div class="container"> -->
+
             <div class="jumbotron jumbotron-fluid">
               <div class="container">
                 <h1 class="display-4">Mongo Scraper</h1>
                 <p class="lead">BBC News Science and Environment</p>
               </div>
             </div>
-            <div class="card">
-              <div class="card-body" id="articles">
-                  <!-- <h5 class="card-title" id="articles"></h5>
-                  <h6 class="card-subtitle mb-2 text-muted"></h6>               -->
+        <div class="container">
+            <div class="col-md-12">
+              {{#if article}}
+                {{#each article}}
+                {{!-- console.log(this.title); --}}
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>{{this.title}}</h4>
+                    </div>
+                    <div class="card-body">
+                      <a href={{this.link}}>{{this.link}}</a>
+                      <button type="button" class="btn btn-success save" id="save" data-id={{this._id}}>Save Article</button>
+                    </div>
+                  </div>
+                  {{/each}}
+                {{else}}
+                <div class="card-body">
+                  <h4>There are currently no articles to view.</h4>
+                </div>
             </div>
-            </div>
-        <!-- </div> -->
+            {{/if}}
+        </div>
             <footer>
               <div class="card">
                 <div class="card-body">
@@ -34,32 +36,3 @@
                 </div>
               </div>
             </footer>
-      <!-- <div id="articles"></div> -->
-      <!-- add to modal -->
-      <!-- Modal -->
-        <div class="modal fade" id="notes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
-      <!-- <div id="notes"></div> -->
-    </div>
-    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="assets/app.js"></script> --}}
-  </body>

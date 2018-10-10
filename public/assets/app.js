@@ -3,10 +3,21 @@ $.getJSON("/articles", function(data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
-    $("#articles").append("<button class='card' data-toggle='modal'data-target='#notes' data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</button>");
+    $("#articles").append("<div class='card'  data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</div>");
+    //**********test code ************/
+    // "<button class='card' data-toggle='modal'data-target='#notes' data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</button>");
+  // }
   }
 });
 
+$(document).on("click", "#scrape", function() {
+  $.ajax({
+    method: "GET",
+    url: "/scrape/"
+  }).then(function(data){
+    console.log(data)
+  });
+});
 
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
@@ -72,3 +83,23 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+
+$(document).on("click", "#save", function() {
+  // Grab the id associated with the article from the submit button
+  var thisId = $(this).attr("data-id");
+
+
+  $.ajax({
+    method: "POST",
+    url: "/saved/" + thisId,
+    data: thisId
+  })
+    // With that done
+    .then(function(data) {
+      // Log the response
+      console.log(data);
+  
+    //  thisId.empty();
+    });
+  });

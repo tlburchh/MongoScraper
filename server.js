@@ -6,6 +6,9 @@ var cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
+var Article = require("./models/Article");
+var Note = require("./models/Note");
+
 
 
 
@@ -35,17 +38,20 @@ mongoose.connect("mongodb://localhost/mongoscraper", { useNewUrlParser: true });
 //***************************** */
 //GET requests to render Handlebars pages
 app.get("/", function(req, res) {
-  db.Article.find({"saved": false}, function(error, data) {
+  Article.find({}, function(error, data) {
     var hbsObject = {
       article: data
     };
+    // console.log(Article)
     console.log(hbsObject);
     res.render("index", hbsObject);
   });
 });
 
 app.get("/saved", function(req, res) {
-  db.Article.find({"saved": true}).populate("notes").exec(function(error, articles) {
+  Article.find({})
+  .populate("notes")
+  .exec(function(error, articles) {
     var hbsObject = {
       article: articles
     };
@@ -72,6 +78,7 @@ axios.get("https://www.bbc.com/news/science_and_environment").then(function(resp
 
     result.title = $(this).children().text();
     result.link = $(this).parent("a").attr("href");
+    // result.saved = false;
     // console.log(result);
     db.Article.create(result)
     .then(function(dbArticle) {
@@ -101,11 +108,6 @@ app.get("/articles", function(req, res) {
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // Finish the route so it finds one article using the req.params.id,
-  // and run the populate method with "note",
-  // then responds with the article with the note included
   db.Article.findOne({ _id: req.params.id})
     .populate("note")
     .then(function(article){  
@@ -141,6 +143,27 @@ app.post("/articles/:id", function(req, res) {
       });
     });
 
+
+
+  app.post("/saved/:id", function(req, res) {
+      db.Note.create(req.body)
+      .then(function(newSave){
+        return db.Article.findOneAndUpdate(
+          {
+            _id: req.params.id
+          }, 
+          {
+            note: newSave._id
+          },
+          {
+            new:true
+          });
+        }).then(function(article){
+          res.json(article);
+        }).catch(function(err){
+          res.json(err);
+        });
+      });
 
 // Start the server
 app.listen(PORT, function() {
