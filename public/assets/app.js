@@ -1,59 +1,60 @@
 // Grab the articles as a json
-$.getJSON("/articles", function(data) {
-  // For each one
-  for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
-    $("#articles").append("<div class='card'  data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</div>");
-    //**********test code ************/
-    // "<button class='card' data-toggle='modal'data-target='#notes' data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</button>");
-  // }
-  }
-});
+// $.getJSON("/articles", function(data) {
+//   // For each one
+//   for (var i = 0; i < data.length; i++) {
+//     // Display the apropos information on the page
+//     // $("#articles").append("<div class='card'  data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</div>");
+//     //**********test code ************/
+//     // "<button class='card' data-toggle='modal'data-target='#notes' data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + "https://www.bbc.com"+data[i].link + "</button>");
+//   // }
+//   }
+// });
 
 $(document).on("click", "#scrape", function() {
   $.ajax({
     method: "GET",
     url: "/scrape/"
   }).then(function(data){
+    window.location = "/"
     console.log(data)
   });
 });
 
 // Whenever someone clicks a p tag
-$(document).on("click", "#note", function() {
-  // Empty the notes from the note section
-  $("#notes").empty();
-  // Save the id from the p tag
-  var thisId = $(this).attr("data-id");
+// $(document).on("click", "#note", function() {
+//   // Empty the notes from the note section
+//   $("#notes").empty();
+//   // Save the id from the p tag
+//   var thisId = $(this).attr("data-id");
 
-  // Now make an ajax call for the Article
-  $.ajax({
-    method: "GET",
-    url: "/articles/" + thisId
-  })
+//   // Now make an ajax call for the Article
+//   $.ajax({
+//     method: "GET",
+//     url: "/articles/" + thisId
+//   })
     // With that done, add the note information to the page
-    .then(function(data) {
-      console.log(data);
+    // .then(function(data) {
+    //   console.log("note data: " + data);
       // The title of the article
-      $("#notes").append(`<div class="card-body">
-        <h2>"${data.title}"</h2>
-        </div>`);
-      // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' >");
-      // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
-      // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      // $("#notes").append(`<div class="card-body">
+      //   <h2>"${data.title}"</h2>
+      //   </div>`);
+      // // An input to enter a new title
+      // $("#notes").append("<input id='titleinput' name='title' >");
+      // // A textarea to add a new note body
+      // $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+      // // A button to submit a new note, with the id of the article saved to it
+      // $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
       // If there's a note in the article
-      if (data.note) {
-        // Place the title of the note in the title input
-        $("#titleinput").val(data.note.title);
-        // Place the body of the note in the body textarea
-        $("#bodyinput").val(data.note.body);
-      }
-    });
-});
+    //   if (data.note) {
+    //     // Place the title of the note in the title input
+    //     $("#titleinput").val(data.note.title);
+    //     // Place the body of the note in the body textarea
+    //     $("#bodyinput").val(data.note.body);
+    //   }
+    // });
+// });
 
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
@@ -89,7 +90,7 @@ $(document).on("click", "#save", function() {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
-console.log(thisId);
+    console.log("thisId: " + thisId);
   $.ajax({
     method: "POST",
     url: "/saved/" + thisId,
@@ -98,7 +99,8 @@ console.log(thisId);
     // With that done
     .then(function(data) {
       // Log the response
-      console.log(data);
+      // window.location = "/"
+      console.log("saved data: " + data);
   
     //  thisId.empty();
     });
@@ -111,7 +113,7 @@ console.log(thisId);
   // console.log(thisId);
     $.ajax({
       method: "DELETE",
-      url: "/saved/" + thisId,
+      url: "/saved/delete" + thisId,
       data: thisId
     })
       // With that done

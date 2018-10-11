@@ -154,7 +154,7 @@ app.post("/articles/:id", function(req, res) {
             _id: req.params.id
           }, 
           {
-            note: newSave._id
+            $set: req.body
           },
           {
             new:true
@@ -165,6 +165,8 @@ app.post("/articles/:id", function(req, res) {
           res.json(err);
         });
       });
+
+    
 
 // Start the server
 app.listen(PORT, function() {
