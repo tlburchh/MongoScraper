@@ -20,7 +20,7 @@ $(document).on("click", "#scrape", function() {
 });
 
 // Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
+$(document).on("click", "#note", function() {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
@@ -89,11 +89,11 @@ $(document).on("click", "#save", function() {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
-
+console.log(thisId);
   $.ajax({
     method: "POST",
     url: "/saved/" + thisId,
-    data: thisId
+    data: {thisId}
   })
     // With that done
     .then(function(data) {
@@ -103,3 +103,22 @@ $(document).on("click", "#save", function() {
     //  thisId.empty();
     });
   });
+//delete saved article
+  $(document).on("click", "#delete", function() {
+    // Grab the id associated with the article from the submit button
+    var thisId = $(this).attr("data-id");
+  
+  // console.log(thisId);
+    $.ajax({
+      method: "DELETE",
+      url: "/saved/" + thisId,
+      data: thisId
+    })
+      // With that done
+      .then(function(data) {
+        // Log the response
+        console.log(data);
+    
+      //  thisId.empty();
+      });
+    });

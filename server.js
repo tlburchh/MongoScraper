@@ -49,8 +49,9 @@ app.get("/", function(req, res) {
 });
 
 app.get("/saved", function(req, res) {
-  Saved.find({})
-  .populate("notes")
+ 
+  Saved.find({}) 
+  .populate("title", "link")
   .exec(function(error, saved) {
     var hbsObject = {
       saved: saved
