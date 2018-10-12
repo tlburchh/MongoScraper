@@ -29,9 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
-
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/mongoscraper", { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI);
 
 // Routes
 
@@ -43,7 +43,7 @@ app.get("/", function(req, res) {
       article: data
     };
     // console.log(Article)
-    console.log(hbsObject);
+    // console.log(hbsObject);
     res.render("index", hbsObject);
   });
 });
@@ -84,7 +84,7 @@ axios.get("https://www.bbc.com/news/science_and_environment").then(function(resp
     db.Article.create(result)
     .then(function(dbArticle) {
       // View the added result in the console
-      console.log("dbArticle: " + dbArticle);
+      // console.log("dbArticle: " + dbArticle);
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
@@ -120,11 +120,6 @@ app.get("/articles/:id", function(req, res) {
 
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // save the new note that gets posted to the Notes collection
-  // then find an article from the req.params.id
-  // and update it's "note" property with the _id of the new note
   db.Note.create(req.body)
     .then(function(newNote){
       return db.Article.findOneAndUpdate(
@@ -154,17 +149,34 @@ app.post("/articles/:id", function(req, res) {
             _id: req.params.id
           }, 
           {
-            $set: req.body
+            save: newSave.body
           },
           {
             new:true
           });
         }).then(function(article){
+          console.log("saved?")
           res.json(article);
         }).catch(function(err){
           res.json(err);
         });
       });
+
+
+      app.post("/saved/delete/:id", function(req, res) {
+        db.Saved.create(req.body)
+        .then(function(newSave){
+          return db.Article.findOneAndDelete(
+            {
+              _id: req.params.id
+            });
+          }).then(function(article){
+            console.log("deleted?")
+            res.json(article);
+          }).catch(function(err){
+            res.json(err);
+          });
+        });
 
     
 

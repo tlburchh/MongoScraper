@@ -93,14 +93,14 @@ $(document).on("click", "#save", function() {
     console.log("thisId: " + thisId);
   $.ajax({
     method: "POST",
-    url: "/saved/" + thisId,
-    data: {thisId}
+    url: "/articles/" + thisId,
+    data: thisId
   })
     // With that done
     .then(function(data) {
       // Log the response
       // window.location = "/"
-      console.log("saved data: " + data);
+      // console.log("saved data: " + data.title + data.link);
   
     //  thisId.empty();
     });
