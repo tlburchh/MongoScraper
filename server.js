@@ -9,7 +9,7 @@ var db = require("./models");
 var Article = require("./models/Article");
 var Note = require("./models/Note");
 var Saved = require("./models/Saved")
-
+var path = require("path")
 
 
 // Initialize Express
@@ -28,7 +28,7 @@ app.set("view engine", "handlebars");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 // Connect to the Mongo DB
