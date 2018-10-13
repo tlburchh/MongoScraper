@@ -1,3 +1,11 @@
+        
+        
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4 text-center">Saved Articles</h1>
+            <p class="lead text-center">BBC News Science and Environment</p>
+          </div>
+        </div>
         <div class="container">
             <div class="col-md-12">
               {{#if saved}}
@@ -10,14 +18,14 @@
                     </div>
                     <div class="card-body">
                       <a href={{this.link}}>{{this.link}}</a>
-                      <button type="button" class="btn btn-success save" id="note" data-id={{this._id}}>Notes</button>
-                      <button type="button" class="btn btn-success save" id="delete" data-id={{this._id}}>Delete</button>
+                      <button type="button" class="btn btn-outline-danger save" id="note" data-id={{this._id}}>Notes</button>
+                      <button type="button" class="btn btn-danger save" id="delete" data-id={{this._id}}>Delete</button>
                     </div>
                   </div>
                   {{/each}}
                 {{else}}
                 <div class="card-body">
-                  <h4>There are currently no articles to view.</h4>
+                  <h4 class="text-center">There are currently no articles to view.</h4>
                 </div>
             </div>
             {{/if}}

@@ -3,8 +3,8 @@
 
             <div class="jumbotron jumbotron-fluid">
               <div class="container">
-                <h1 class="display-4">Mongo Scraper</h1>
-                <p class="lead">BBC News Science and Environment</p>
+                <h1 class="display-4 text-center">Mongo Scraper</h1>
+                <p class="lead text-center">BBC News Science and Environment</p>
               </div>
             </div>
         <div class="container">
@@ -18,13 +18,13 @@
                     </div>
                     <div class="card-body">
                       <a href={{this.link}}>{{this.link}}</a>
-                      <button type="button" class="btn btn-success save" id="save" data-id={{this._id}}>Save Article</button>
+                      <button type="button" class="btn btn-danger save float-right" id="save" data-id={{this._id}}>Save Article</button>
                     </div>
                   </div>
                   {{/each}}
                 {{else}}
                 <div class="card-body">
-                  <h4>There are currently no articles to view.</h4>
+                  <h4 class="text-center">There are currently no articles to view.</h4>
                 </div>
             </div>
             {{/if}}
